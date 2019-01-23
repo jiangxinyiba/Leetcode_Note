@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 using namespace std;
-
+ 
 class Solution	
 {
 public:
@@ -12,6 +12,8 @@ public:
 	vector<int>	plusOne(vector<int>	&digits);
 	vector<vector<int>> pascalTriangle(int numRows);	
 	vector<int> pascalTriangle_onearray(int	rowIndex);
+	int *merge(int A[],int B[],int m,int n);
+	int length(int Array[]);
 };
 
 // 去除重复元素
@@ -51,7 +53,7 @@ int	Solution::removeDuplicates(int A[],int n)
 }
 
 // 去除有序数组中重复元素，但是允许最多两次重复的元素
-int	Solution::removeDuplicates_2(int	A[],int	n)	
+int	Solution::removeDuplicates_2(int A[],int n)	
 {
 	if(n == 0)	
 	{
@@ -79,7 +81,7 @@ int	Solution::removeDuplicates_2(int	A[],int	n)
 }
 
 // vector数组的进位加法[从最后一位加1，满十则前位加1]
-vector<int>	Solution::plusOne(vector<int>	&digits)	
+vector<int>	Solution::plusOne(vector<int> &digits)	
 {
 	vector<int>	res(digits.size(),0);
 	int	sum	= 0;
@@ -130,6 +132,51 @@ vector<int>	Solution::pascalTriangle_onearray(int rowIndex)
 	return	vals;
 }
 
+// 合并有序数组A和B
+int *Solution::merge(int A[],int B[],int m,int n)	
+{
+	//int m = 4;//sizeof(A)/sizeof(int)
+	//int n = 4;//sizeof(B)/sizeof(int)
+	int	i =	m+n-1;
+	int	j =	m-1;
+	int	k =	n-1;
+	while(i>=0)	
+	{// 从向量尾部倒过来添加
+		if(j>=0	&& k>=0)	
+		{// 两个都没排完时
+			if(A[j]>B[k])	
+			{// 添加大的元素到最后
+				A[i]=A[j];
+				j--;
+			}	
+			else	
+			{
+				A[i]=B[k];
+				k--;
+			}
+		}	
+		else if(j>=0)	
+		{// 若B排完，A还有剩余，依次添加到A中
+			A[i]=A[j];
+			j--;
+		}	
+		else if(k>=0)	
+		{// 若A排完，B还有剩余，依次添加到A中
+			A[i]=B[k];
+			k--;
+		}
+		i--;
+	}
+	return A;
+}
+// 返回数组长度
+int Solution::length(int Array[])
+{
+	return sizeof(Array)/sizeof(int);
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char *argv[]) 
 {
 	Solution *sol = new Solution();
@@ -200,6 +247,21 @@ int main(int argc, char *argv[])
 		cout<<" ";
 	}
 	cout<<endl;
+
+	// 合并有序数组A和B
+	cout<<endl;
+	cout<<"合并有序数组A和B:"<< endl;
+	int A1[ ] = {1, 2, 3, 9};
+	int B1[ ] = {2, 5, 6, 8};
+	int nA1 = 4; 
+	int nB1 = 4;  
+	int *AB;
+	AB = sol->merge(A1,B1,nA1,nB1);
+	for(int i=0;i<nA1+nB1;i++)
+	{
+		cout << AB[i] << " " ;
+	}
+	cout << endl;
 
 	system("pause");
 	return 0;
