@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 using namespace std;
- 
+
 class Solution	
 {
 public:
@@ -13,8 +13,16 @@ public:
 	vector<vector<int>> pascalTriangle(int numRows);	
 	vector<int> pascalTriangle_onearray(int	rowIndex);
 	int *merge(int A[],int B[],int m,int n);
-	int length(int Array[]);
+	template<typename T> //注意，这里没有引号结尾
+	inline int length(T& array){return sizeof(array)/sizeof(array[0]);}
 };
+
+// 返回数组长度
+//template<typename T> //注意，这里没有引号结尾
+//int Solution::length(T& array)
+//{
+//	return sizeof(array)/sizeof(array[0]);
+//}
 
 // 去除重复元素
 int	Solution::removeElement(int A[],int n,int elem)	
@@ -135,8 +143,6 @@ vector<int>	Solution::pascalTriangle_onearray(int rowIndex)
 // 合并有序数组A和B
 int *Solution::merge(int A[],int B[],int m,int n)	
 {
-	//int m = 4;//sizeof(A)/sizeof(int)
-	//int n = 4;//sizeof(B)/sizeof(int)
 	int	i =	m+n-1;
 	int	j =	m-1;
 	int	k =	n-1;
@@ -169,15 +175,12 @@ int *Solution::merge(int A[],int B[],int m,int n)
 	}
 	return A;
 }
-// 返回数组长度
-int Solution::length(int Array[])
-{
-	return sizeof(Array)/sizeof(int);
-}
+
+
 
 ///////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////
-int main(int argc, char *argv[]) 
+int main( ) 
 {
 	Solution *sol = new Solution();
 
@@ -253,8 +256,8 @@ int main(int argc, char *argv[])
 	cout<<"合并有序数组A和B:"<< endl;
 	int A1[ ] = {1, 2, 3, 9};
 	int B1[ ] = {2, 5, 6, 8};
-	int nA1 = 4; 
-	int nB1 = 4;  
+	int nA1 = sol->length(A1); 
+	int nB1 = sol->length(B1);  
 	int *AB;
 	AB = sol->merge(A1,B1,nA1,nB1);
 	for(int i=0;i<nA1+nB1;i++)
