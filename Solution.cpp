@@ -1,11 +1,14 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <map>
 using namespace std;
 
 class Solution	
 {
 public:
+	template<typename T> //注意，这里没有引号结尾
+	inline int length(T& array){return sizeof(array)/sizeof(array[0]);};
 	int	removeElement(int A[],int n,int	elem);
 	int	removeDuplicates(int A[],int n)	;
 	int	removeDuplicates_2(int A[],int n);
@@ -13,8 +16,8 @@ public:
 	vector<vector<int>> pascalTriangle(int numRows);	
 	vector<int> pascalTriangle_onearray(int	rowIndex);
 	int *merge(int A[],int B[],int m,int n);
-	template<typename T> //注意，这里没有引号结尾
-	inline int length(T& array){return sizeof(array)/sizeof(array[0]);}
+	vector<int>	twoSum(vector<int> &numbers,int target);
+	
 };
 
 // 返回数组长度
@@ -176,7 +179,46 @@ int *Solution::merge(int A[],int B[],int m,int n)
 	return A;
 }
 
-
+// 求数组中两个数值的序号，两个数值求和等于指定值
+vector<int>	Solution::twoSum(vector<int> &numbers, int target)	
+{
+	//边角问题，我们要考虑边角问题的处理
+	vector<int>	ret;
+	if(numbers.size()<=1)
+	{
+		return	ret;
+	}
+	//新建一个map<key,value>	模式的来存储numbers里面的元素和index，
+	map<int,int> myMap;
+	for(int	i=0;i<numbers.size();++i)
+	{
+		myMap[numbers[i]]=i;
+	}
+	for(int	i=0;i<numbers.size();++i)
+	{
+		int	rest_val=target	- numbers[i];
+		if(myMap.find(rest_val) != myMap.end())
+		{
+			int	index = myMap[rest_val];
+			if(index == i)
+			{
+				continue;					//如果是同一个数字，我们就pass，是不会取这个值的
+			}
+			if(index < i)
+			{
+				ret.push_back(index+1);		//这里+1是因为题目说明白了要non-zero	based	index
+				ret.push_back(i+1);
+				return	ret;
+			}
+			else
+			{
+				ret.push_back(i+1);
+				ret.push_back(index+1);
+				return	ret;
+			}
+		}
+	}
+}
 
 ///////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////
@@ -254,10 +296,10 @@ int main( )
 	// 合并有序数组A和B
 	cout<<endl;
 	cout<<"合并有序数组A和B:"<< endl;
-	int A1[ ] = {1, 2, 3, 9};
+	int A1[8] = {1, 2, 3, 9};
 	int B1[ ] = {2, 5, 6, 8};
-	int nA1 = sol->length(A1); 
-	int nB1 = sol->length(B1);  
+	int nA1 = 4;//sol->length(A1); 
+	int nB1 = 4;//sol->length(B1);  
 	int *AB;
 	AB = sol->merge(A1,B1,nA1,nB1);
 	for(int i=0;i<nA1+nB1;i++)
@@ -265,6 +307,22 @@ int main( )
 		cout << AB[i] << " " ;
 	}
 	cout << endl;
+
+	// 求数组中两个数值的序号，两个数值求和等于指定值
+	cout<<endl;
+	cout<<"求数组中两个数值的序号:"<< endl;
+	// vector数组的进位加法[从最后一位加1，满十则前位加1]
+	int n2[] = {1, 2, 3, 9, 11};
+	vector<int> numbers(n2, n2+5);
+	vector<int> TwoTarget;
+	int target = 12;
+	TwoTarget = sol->twoSum(numbers,target);	
+	for (int numTarget=0;numTarget<2;numTarget++)
+	{
+		cout<<TwoTarget[numTarget]<<" ";
+	}
+	cout<<endl;
+
 
 	system("pause");
 	return 0;
