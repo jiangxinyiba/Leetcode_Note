@@ -1,10 +1,11 @@
 #include <iostream>
+#include <algorithm>
 #include <string>
 #include <vector>
 #include <map>
 using namespace std;
 
-class Solution	
+class Lettcode_Array 
 {
 public:
 	template<typename T> //注意，这里没有引号结尾
@@ -17,7 +18,7 @@ public:
 	vector<int> pascalTriangle_onearray(int	rowIndex);
 	int *merge(int A[],int B[],int m,int n);
 	vector<int>	twoSum(vector<int> &numbers,int target);
-	
+	vector<vector<int>>	threeSum(vector<int> &num);
 };
 
 // 返回数组长度
@@ -28,7 +29,7 @@ public:
 //}
 
 // 去除重复元素
-int	Solution::removeElement(int A[],int n,int elem)	
+int	Lettcode_Array::removeElement(int A[],int n,int elem)	
 {
 	int	i=0;
 	int j =	0;
@@ -45,7 +46,7 @@ int	Solution::removeElement(int A[],int n,int elem)
 }
 
 // 去除有序数组中的重复元素
-int	Solution::removeDuplicates(int A[],int n)	
+int	Lettcode_Array::removeDuplicates(int A[],int n)	
 {// A is a sorted array!
 	if(n==0)	
 	{
@@ -64,7 +65,7 @@ int	Solution::removeDuplicates(int A[],int n)
 }
 
 // 去除有序数组中重复元素，但是允许最多两次重复的元素
-int	Solution::removeDuplicates_2(int A[],int n)	
+int	Lettcode_Array::removeDuplicates_2(int A[],int n)	
 {
 	if(n == 0)	
 	{
@@ -92,7 +93,7 @@ int	Solution::removeDuplicates_2(int A[],int n)
 }
 
 // vector数组的进位加法[从最后一位加1，满十则前位加1]
-vector<int>	Solution::plusOne(vector<int> &digits)	
+vector<int>	Lettcode_Array::plusOne(vector<int> &digits)	
 {
 	vector<int>	res(digits.size(),0);
 	int	sum	= 0;
@@ -111,7 +112,7 @@ vector<int>	Solution::plusOne(vector<int> &digits)
 }
 
 // 帕斯卡三角形
-vector<vector<int>>	Solution::pascalTriangle(int numRows)	
+vector<vector<int>>	Lettcode_Array::pascalTriangle(int numRows)	
 {
 	vector<vector<int>>	vals;
 	vals.resize(numRows);
@@ -129,7 +130,7 @@ vector<vector<int>>	Solution::pascalTriangle(int numRows)
 }
 
 // 帕斯卡三角形[一维数组]
-vector<int>	Solution::pascalTriangle_onearray(int rowIndex)	
+vector<int>	Lettcode_Array::pascalTriangle_onearray(int rowIndex)	
 {
 	vector<int>	vals;
 	vals.resize(rowIndex+1,	1);
@@ -144,7 +145,7 @@ vector<int>	Solution::pascalTriangle_onearray(int rowIndex)
 }
 
 // 合并有序数组A和B
-int *Solution::merge(int A[],int B[],int m,int n)	
+int *Lettcode_Array::merge(int A[],int B[],int m,int n)	
 {
 	int	i =	m+n-1;
 	int	j =	m-1;
@@ -180,7 +181,7 @@ int *Solution::merge(int A[],int B[],int m,int n)
 }
 
 // 求数组中两个数值的序号，两个数值求和等于指定值
-vector<int>	Solution::twoSum(vector<int> &numbers, int target)	
+vector<int>	Lettcode_Array::twoSum(vector<int> &numbers, int target)	
 {
 	//边角问题，我们要考虑边角问题的处理
 	vector<int>	ret;
@@ -220,23 +221,77 @@ vector<int>	Solution::twoSum(vector<int> &numbers, int target)
 	}
 }
 
+// 列出数组中三个数值求和等于0的所有情况
+vector<vector<int>>	Lettcode_Array::threeSum(vector<int> &num)	
+{
+	vector<vector<int>>	ret;
+	//corner	case	invalid	check
+	if(num.size()<=2)
+	{ 
+		return	ret;
+	}
+
+	//first	we need to sort the array because we need the non-descending order
+	sort(num.begin(),num.end());
+	for(int	i=0;i<num.size()-2;	++i)
+	{
+		int	j=i+1;
+		int	k=num.size()-1;
+		while(j<k)
+		{
+			vector<int>	curr;			//create a	tmp	vector	to	store	each	triplet	which	satisfy	the	solution.
+			if(num[i]+num[j]+num[k]==0)
+			{
+				curr.push_back(num[i]);
+				curr.push_back(num[j]);
+				curr.push_back(num[k]);
+				ret.push_back(curr);
+				++j;
+				--k;
+				//this	two	while	loop	is	used	to	skip the	duplication	solution
+				while(j<k&&num[j-1]==num[j])
+				{//若第j-1个和第j个相同则跳过
+					++j;
+				}
+				while(j<k&&num[k]==num[k+1])
+				{//若第k个和第k+1个相同则跳过
+					--k;
+				}
+			}
+			else if(num[i]+num[j]+num[k]<0)
+			{// 和过小，则j+1	
+				++j;
+			}
+			else
+			{// 和过大，则k-1
+				--k;
+			}	
+		}
+		//this	while	loop	also	is	used	to	skip	the	duplication	solution
+		while(i<num.size()-1&&num[i]==num[i+1])
+		{//若第i个和第i+1个相同则跳过
+			++i;
+		}
+	}
+	return	ret;
+}
+
 ///////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////
 int main( ) 
 {
-	Solution *sol = new Solution();
-
+	Lettcode_Array *array = new Lettcode_Array();
 	// 删除数组中的指定项，返回新数组个数
 	int A[] = {1 ,2 ,2 ,3 ,4 ,2 ,5};
 	int Nremoveelement;
-	Nremoveelement = sol->removeElement(A,sizeof(A)/sizeof(A[0]),2);
+	Nremoveelement = array->removeElement(A,sizeof(A)/sizeof(A[0]),2);
 	cout << "删除指定项后的数组元素个数：" << endl;
 	cout << Nremoveelement<<endl;
 
 	// 删除有序数组中的重复项，返回新数组个数
 	int Asorted[] = {1 ,2 ,2 ,3 ,4 ,4 ,5};
 	int Nremoveduplicate;
-	Nremoveduplicate = sol->removeDuplicates(Asorted,sizeof(Asorted)/sizeof(Asorted[0]));
+	Nremoveduplicate = array->removeDuplicates(Asorted,sizeof(Asorted)/sizeof(Asorted[0]));
 	cout<<endl;
 	cout << "删除有序数组中的重复项后的新数组个数：" << endl;
 	cout << Nremoveduplicate <<endl;
@@ -244,7 +299,7 @@ int main( )
 	// 删除有序数组中的重复项，但是允许最多两次重复的元素,返回新数组个数
 	int Asorted2[] = {1 ,2 ,2 ,3,3,3 ,4 ,4 ,5};
 	int Nremoveduplicate2;
-	Nremoveduplicate2 = sol->removeDuplicates_2(Asorted2,sizeof(Asorted2)/sizeof(Asorted2[0]));
+	Nremoveduplicate2 = array->removeDuplicates_2(Asorted2,sizeof(Asorted2)/sizeof(Asorted2[0]));
 	cout<<endl;
 	cout << "删除有序数组中的重复项后的新数组个数：" << endl;
 	cout << Nremoveduplicate2 <<endl;
@@ -253,7 +308,7 @@ int main( )
 	int n[] = {1, 2, 3, 9, 9};
 	vector<int> A3(n, n+5);
 	vector<int> A3_add1;
-	A3_add1 = sol->plusOne(A3);
+	A3_add1 = array->plusOne(A3);
 	cout<<endl;
 	cout << "vector数组的进位加法：" << endl;
 	for(int m=0;m<A3_add1.size();m++)
@@ -268,7 +323,7 @@ int main( )
 	cout<<endl;
 	cout << "生成行数为"<<row<<"的帕斯卡三角形:"<< endl;
 	vector<vector<int>>	PascalTria;
-	PascalTria = sol->pascalTriangle(row);
+	PascalTria = array->pascalTriangle(row);
 	for(int i=0;i<row;i++)
 	{
 		for(int j=0;j<PascalTria[i].size();j++)
@@ -285,7 +340,7 @@ int main( )
 	cout<<endl;
 	cout << "生成行数为"<<row<<"的帕斯卡三角形:"<< endl;
 	vector<int>	PascalTria1;
-	PascalTria1 = sol->pascalTriangle_onearray(row1);	
+	PascalTria1 = array->pascalTriangle_onearray(row1);	
 	for(int j=0;j<PascalTria1.size();j++)
 	{
 		cout<<PascalTria1[j]; 
@@ -301,7 +356,7 @@ int main( )
 	int nA1 = 4;//sol->length(A1); 
 	int nB1 = 4;//sol->length(B1);  
 	int *AB;
-	AB = sol->merge(A1,B1,nA1,nB1);
+	AB = array->merge(A1,B1,nA1,nB1);
 	for(int i=0;i<nA1+nB1;i++)
 	{
 		cout << AB[i] << " " ;
@@ -311,18 +366,33 @@ int main( )
 	// 求数组中两个数值的序号，两个数值求和等于指定值
 	cout<<endl;
 	cout<<"求数组中两个数值的序号:"<< endl;
-	// vector数组的进位加法[从最后一位加1，满十则前位加1]
 	int n2[] = {1, 2, 3, 9, 11};
 	vector<int> numbers(n2, n2+5);
 	vector<int> TwoTarget;
 	int target = 12;
-	TwoTarget = sol->twoSum(numbers,target);	
+	TwoTarget = array->twoSum(numbers,target);	
 	for (int numTarget=0;numTarget<2;numTarget++)
 	{
 		cout<<TwoTarget[numTarget]<<" ";
 	}
 	cout<<endl;
 
+	// 列出数组中三个数值求和等于0的所有情况
+	cout<<endl;
+	cout<<"列出数组中三个数值求和等于0的所有情况:"<< endl;
+	int n3[] = {1, 0, 3, 2, 11, -3, 0};
+	vector<int> numbers3(n3, n3+7);
+	vector<vector<int>> ThreeTarget;
+	ThreeTarget = array->threeSum(numbers3);	
+	for (int numTarget31=0;numTarget31<ThreeTarget.size();numTarget31++)
+	{
+		for (int numTarget32=0;numTarget32<ThreeTarget[0].size();numTarget32++)
+		{
+			cout<<ThreeTarget[numTarget31][numTarget32]<<" ";
+		}
+		cout<<endl;
+	}
+	cout<<endl;
 
 	system("pause");
 	return 0;
