@@ -19,6 +19,7 @@ public:
 	int *merge(int A[],int B[],int m,int n);
 	vector<int>	twoSum(vector<int> &numbers,int target);
 	vector<vector<int>>	threeSum(vector<int> &num);
+	int	findMin(vector<int>	&num);
 };
 
 // 返回数组长度
@@ -275,6 +276,42 @@ vector<vector<int>>	Lettcode_Array::threeSum(vector<int> &num)
 	}
 	return	ret;
 }
+// 选择有序数组中的最小值
+int	Lettcode_Array::findMin(vector<int>	&num)	
+{
+	int	size = num.size();
+	if(size	== 0)	
+	{
+		return 0;
+	}	
+	else if(size ==	1)	
+	{
+	    return num[0];
+	}	
+	else if(size ==	2)	
+	{
+		return min(num[0], num[1]);
+	}
+	int	start =	0;
+	int	stop = size - 1;
+	while(start	< stop - 1)	
+	{
+		if(num[start] <	num[stop])	
+		{
+		    return num[start];
+		}
+		int	mid	= start	+ (stop	- start)/2;
+		if(num[mid] > num[start])	
+		{
+			start =	mid;
+		}	
+		else if(num[mid] < num[start])	
+		{
+			stop = mid;
+		}
+	}
+	return min(num[start],num[stop]);
+}
 
 ///////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////
@@ -392,7 +429,15 @@ int main( )
 		}
 		cout<<endl;
 	}
+
+	// 选择有序数组中的最小值
 	cout<<endl;
+	cout<<"选择有序数组中的最小值:"<< endl;
+	int n4[] = {4,5,6,7,0,1,2,3};
+	vector<int>	number4(n4, n4+8);
+	int minNum;
+	minNum = array->findMin(number4);
+	cout<<minNum<< endl;
 
 	system("pause");
 	return 0;
