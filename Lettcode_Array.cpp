@@ -20,6 +20,7 @@ public:
 	vector<int>	twoSum(vector<int> &numbers,int target);
 	vector<vector<int>>	threeSum(vector<int> &num);
 	int	findMin(vector<int>	&num);
+	int	largestRectangleArea(vector<int> &height);
 };
 
 // 返回数组长度
@@ -313,6 +314,32 @@ int	Lettcode_Array::findMin(vector<int>	&num)
 	return min(num[start],num[stop]);
 }
 
+// 求取直方图中最大的长方形区域
+int	Lettcode_Array::largestRectangleArea(vector<int> &height)	
+{
+	vector<int>	s;
+	//插入高度为0的bar
+	height.push_back(0);
+	int	sum	= 0;
+	int	i = 0;
+	while(i	< height.size())	
+	{
+		if(s.empty() ||	height[i] > height[s.back()])	
+		{
+			s.push_back(i);
+			i++;
+		}	
+		else	
+		{
+			int	t =	s.back();
+			s.pop_back();
+			//这里还需要考虑stack为空的情况
+			sum	= max(sum,height[t]*(s.empty()? i : i-s.back()-1));
+		}
+	}
+	return	sum;
+}
+
 ///////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////
 int main( ) 
@@ -438,6 +465,14 @@ int main( )
 	int minNum;
 	minNum = array->findMin(number4);
 	cout<<minNum<< endl;
+
+	// 求取直方图中最大的长方形区域
+	cout<<endl;
+	cout<<"求取直方图中最大的长方形区域:"<< endl;
+	int n5[] = {2,1,5,6,2,3};
+	vector<int>	number5(n5, n5+6);
+	int sum = array->largestRectangleArea(number5);
+	cout<< sum << endl;
 
 	system("pause");
 	return 0;
