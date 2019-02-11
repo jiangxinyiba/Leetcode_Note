@@ -3,6 +3,9 @@
 #include <string>
 #include <vector>
 #include <map>
+
+# define FALSE 0;
+# define TRUE 1;
 using namespace std;
 
 class Lettcode_Array 
@@ -21,6 +24,8 @@ public:
 	vector<vector<int>>	threeSum(vector<int> &num);
 	int	findMin(vector<int>	&num);
 	int	largestRectangleArea(vector<int> &height);
+	int	maximalRectangle(vector<vector<int>> &matrix);
+	bool isPalindrome(int x);
 };
 
 // 返回数组长度
@@ -227,7 +232,7 @@ vector<int>	Lettcode_Array::twoSum(vector<int> &numbers, int target)
 vector<vector<int>>	Lettcode_Array::threeSum(vector<int> &num)	
 {
 	vector<vector<int>>	ret;
-	//corner	case	invalid	check
+	//corner case invalid check
 	if(num.size()<=2)
 	{ 
 		return	ret;
@@ -251,11 +256,11 @@ vector<vector<int>>	Lettcode_Array::threeSum(vector<int> &num)
 				++j;
 				--k;
 				//this	two	while	loop	is	used	to	skip the	duplication	solution
-				while(j<k&&num[j-1]==num[j])
+				while(j<k && num[j-1]==num[j])
 				{//若第j-1个和第j个相同则跳过
 					++j;
 				}
-				while(j<k&&num[k]==num[k+1])
+				while(j<k && num[k]==num[k+1])
 				{//若第k个和第k+1个相同则跳过
 					--k;
 				}
@@ -315,7 +320,7 @@ int	Lettcode_Array::findMin(vector<int>	&num)
 }
 
 // 求取直方图中最大的长方形区域
-int	Lettcode_Array::largestRectangleArea(vector<int> &height)	
+int	largestRectangleArea(vector<int> &height)	
 {
 	vector<int>	s;
 	//插入高度为0的bar
@@ -338,6 +343,70 @@ int	Lettcode_Array::largestRectangleArea(vector<int> &height)
 		}
 	}
 	return	sum;
+}
+
+// 求取矩阵中的最大矩形面积
+int	maximalRectangle(vector<vector<int>> matrix)	
+{
+	if(matrix.empty() || matrix[0].empty())	
+	{
+		return 0;
+	}
+	int	m =	matrix.size();
+	int	n =	matrix[0].size();
+	vector<vector<int>>	height(m,vector<int>(n,0)); // 生成m行n列的全零矩阵
+	for(int	i=0;i<m;i++)	
+	{
+		for(int	j=0;j<n;j++)	
+		{
+			int mat = matrix[i][j];
+			if(mat==0)	
+			{
+				height[i][j]=0;
+			}	
+			else	
+			{
+				height[i][j] = (i==0)?1:height[i-1][j]+1; 
+			}
+		}
+	}
+	int	maxArea	= 0;
+	for(int	i=0;i<m;i++)	
+	{
+		maxArea	= max(maxArea,largestRectangleArea(height[i]));
+	}
+	return	maxArea;
+}
+
+// 判断回文数
+bool isPalindrome(int x)	
+{
+	if(x<0)
+	{
+		return	FALSE;
+	}
+	else if(x == 0)
+	{
+		return	TRUE;
+	}
+	else
+	{
+		int	tmp	= x;
+		int	y = 0;
+		while(x != 0)
+		{
+			y =	y*10 + x%10;
+			x = x/10;
+		}
+		if(y ==	tmp)
+		{
+			return	TRUE;
+		}
+		else
+		{
+			return	FALSE;	
+		}
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -471,8 +540,30 @@ int main( )
 	cout<<"求取直方图中最大的长方形区域:"<< endl;
 	int n5[] = {2,1,5,6,2,3};
 	vector<int>	number5(n5, n5+6);
-	int sum = array->largestRectangleArea(number5);
+	int sum = largestRectangleArea(number5);
 	cout<< sum << endl;
+
+	// 求取矩阵中的最大矩形面积
+	cout<<endl;
+	cout<<"求取矩阵中的最大矩形面积:"<< endl;
+	int n6[4][4] = {0,0,0,0,0,1,1,1,1,1,1,0,0,1,0,0};
+	///给vector赋二维数组
+	vector<vector<int>> number6(4,vector<int>(4)) ;  
+	for(int i = 0; i < 4; ++i)
+	{
+		for(int j = 0; j < 4; ++j)
+		{
+			number6[i][j]=n6[i][j];
+		}
+	}
+    int sum6 = maximalRectangle(number6);	
+	cout<< sum6 << endl;
+
+	// 判断回文数
+	int n7 = 12321;
+	cout<<endl;
+	cout<<"判断回文数"<<n7<<":"<< endl;
+	cout<< boolalpha <<isPalindrome(n7) << endl;
 
 	system("pause");
 	return 0;
