@@ -26,6 +26,7 @@ public:
 	int	largestRectangleArea(vector<int> &height);
 	int	maximalRectangle(vector<vector<int>> &matrix);
 	bool isPalindrome(int x);
+	int factorial(int n);
 };
 
 // 返回数组长度
@@ -409,33 +410,71 @@ bool isPalindrome(int x)
 	}
 }
 
+// 阶乘 
+int Lettcode_Array::factorial(int n)
+{
+	int result;
+	if (n == 1)
+	{
+		result = 1;
+	}
+	else
+	{
+		result = n*factorial(n-1);
+	}
+	return result;
+}
+
+//  Fibonacci 数列
+int Fibonacci(int n)
+{
+	int result;
+	int mem_i=0;
+	int mem_i_1=1;
+	int mem_i_2=1;
+	if (n<2)
+	{
+		result = 1;
+	}
+	for(int i=2;i<n;i++)
+	{
+		mem_i = mem_i_1+mem_i_2;
+		mem_i_2 = mem_i_1;
+		mem_i_1 = mem_i;
+	}
+	return result = mem_i;	
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////
 int main( ) 
 {
 	Lettcode_Array *array = new Lettcode_Array();
+	int result;
+	int num;
+
 	// 删除数组中的指定项，返回新数组个数
 	int A[] = {1 ,2 ,2 ,3 ,4 ,2 ,5};
-	int Nremoveelement;
-	Nremoveelement = array->removeElement(A,sizeof(A)/sizeof(A[0]),2);
+	result = array->removeElement(A,sizeof(A)/sizeof(A[0]),2);
 	cout << "删除指定项后的数组元素个数：" << endl;
-	cout << Nremoveelement<<endl;
+	cout << result<<endl;
 
 	// 删除有序数组中的重复项，返回新数组个数
 	int Asorted[] = {1 ,2 ,2 ,3 ,4 ,4 ,5};
-	int Nremoveduplicate;
-	Nremoveduplicate = array->removeDuplicates(Asorted,sizeof(Asorted)/sizeof(Asorted[0]));
+	result = array->removeDuplicates(Asorted,sizeof(Asorted)/sizeof(Asorted[0]));
 	cout<<endl;
 	cout << "删除有序数组中的重复项后的新数组个数：" << endl;
-	cout << Nremoveduplicate <<endl;
+	cout << result <<endl;
 
 	// 删除有序数组中的重复项，但是允许最多两次重复的元素,返回新数组个数
 	int Asorted2[] = {1 ,2 ,2 ,3,3,3 ,4 ,4 ,5};
-	int Nremoveduplicate2;
-	Nremoveduplicate2 = array->removeDuplicates_2(Asorted2,sizeof(Asorted2)/sizeof(Asorted2[0]));
+	result = array->removeDuplicates_2(Asorted2,sizeof(Asorted2)/sizeof(Asorted2[0]));
 	cout<<endl;
 	cout << "删除有序数组中的重复项后的新数组个数：" << endl;
-	cout << Nremoveduplicate2 <<endl;
+	cout << result <<endl;
 
 	// vector数组的进位加法[从最后一位加1，满十则前位加1]
 	int n[] = {1, 2, 3, 9, 9};
@@ -452,12 +491,12 @@ int main( )
 	cout<<endl;
 
 	// 帕斯卡三角形[二维数组]
-	int row = 5;
+	num = 5;
 	cout<<endl;
-	cout << "生成行数为"<<row<<"的帕斯卡三角形:"<< endl;
+	cout << "生成行数为"<<num<<"的帕斯卡三角形:"<< endl;
 	vector<vector<int>>	PascalTria;
-	PascalTria = array->pascalTriangle(row);
-	for(int i=0;i<row;i++)
+	PascalTria = array->pascalTriangle(num);
+	for(int i=0;i<num;i++)
 	{
 		for(int j=0;j<PascalTria[i].size();j++)
 		{
@@ -469,11 +508,11 @@ int main( )
 	cout<<endl;
 
 	// 帕斯卡三角形[一维数组]
-	int row1 = 4;
+	num = 4;
 	cout<<endl;
-	cout << "生成行数为"<<row<<"的帕斯卡三角形:"<< endl;
+	cout<<"生成行数为"<<num<<"的帕斯卡三角形:"<< endl;
 	vector<int>	PascalTria1;
-	PascalTria1 = array->pascalTriangle_onearray(row1);	
+	PascalTria1 = array->pascalTriangle_onearray(num);	
 	for(int j=0;j<PascalTria1.size();j++)
 	{
 		cout<<PascalTria1[j]; 
@@ -531,17 +570,16 @@ int main( )
 	cout<<"选择有序数组中的最小值:"<< endl;
 	int n4[] = {4,5,6,7,0,1,2,3};
 	vector<int>	number4(n4, n4+8);
-	int minNum;
-	minNum = array->findMin(number4);
-	cout<<minNum<< endl;
+	result = array->findMin(number4);
+	cout<<result<< endl;
 
 	// 求取直方图中最大的长方形区域
 	cout<<endl;
 	cout<<"求取直方图中最大的长方形区域:"<< endl;
 	int n5[] = {2,1,5,6,2,3};
 	vector<int>	number5(n5, n5+6);
-	int sum = largestRectangleArea(number5);
-	cout<< sum << endl;
+	result = largestRectangleArea(number5);
+	cout<< result << endl;
 
 	// 求取矩阵中的最大矩形面积
 	cout<<endl;
@@ -556,14 +594,28 @@ int main( )
 			number6[i][j]=n6[i][j];
 		}
 	}
-    int sum6 = maximalRectangle(number6);	
-	cout<< sum6 << endl;
+    result = maximalRectangle(number6);	
+	cout<< result << endl;
 
 	// 判断回文数
-	int n7 = 12321;
+	num = 12321;
 	cout<<endl;
-	cout<<"判断回文数"<<n7<<":"<< endl;
-	cout<< boolalpha <<isPalindrome(n7) << endl;
+	cout<<"判断回文数"<<num<<":"<< endl;
+	cout<< boolalpha <<isPalindrome(num) << endl;
+
+	// n阶乘
+	num = 5;
+	cout<<endl;
+	cout<<num<<"阶乘为："<< endl;
+	result = array->factorial(num);
+	cout<< result << endl;
+
+	//  Fibonacci 数列
+	num = 6;
+	cout<<endl;
+	cout<<"第"<<num<<"个斐波那契数是："<< endl;
+	result = Fibonacci(num);
+	cout<< result << endl;
 
 	system("pause");
 	return 0;
