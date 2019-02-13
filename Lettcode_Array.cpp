@@ -25,6 +25,8 @@ public:
 	int	findMin(vector<int>	&num);
 	int	largestRectangleArea(vector<int> &height);
 	int	maximalRectangle(vector<vector<int>> &matrix);
+	bool searchMatrix(vector<vector<int>> &matrix,int target);
+	int	searchInsert(int A[], int n, int target);	
 	bool isPalindrome(int x);
 	int factorial(int n);
 };
@@ -410,6 +412,58 @@ bool isPalindrome(int x)
 	}
 }
 
+// 寻找有序矩阵中的指定元素 O(n^2)
+bool searchMatrix(vector<vector<int>> &matrix,int target)	
+{
+/*	we	set	the	corner	case	as	below:
+1,	if	the	row	number	of	input	matrix	is	0,	we	set	it	false
+2,	if	the	colomun	number	of	input	matrix	is	0,	we	set	it	false*/
+	if(matrix.size() ==	0)    {return	false;}
+	if(matrix[0].size()	==	0){return	false;}
+	int	rowNumber =	0;
+	int	colNumber =	matrix[0].size()-1;
+	while(rowNumber<matrix.size() && colNumber>=0)
+	{
+		if(target<matrix[rowNumber][colNumber])
+		{
+			--colNumber;
+		}
+		else if(target>matrix[rowNumber][colNumber])
+		{
+			++rowNumber;
+		}
+		else
+		{
+			return	true;
+		}
+	}
+	return	false;
+}
+
+// 寻找有序数组中指定元素的位置[二分法]
+int	searchInsert(int A[], int n, int target)	
+{
+	int	low	= 0;
+	int	high = n-1;
+	while(low<=high)	
+	{
+		int	mid	= low+(high-low)/2;
+		if(A[mid] == target)	
+		{
+		   return mid;
+		}	
+		else if(A[mid]<target)	
+		{
+		   low = mid+1;
+		}	
+		else	
+		{
+		   high = mid-1;
+		}
+	}
+	return	low;
+}
+
 // 阶乘 
 int Lettcode_Array::factorial(int n)
 {
@@ -603,6 +657,29 @@ int main( )
 	cout<<"判断回文数"<<num<<":"<< endl;
 	cout<< boolalpha <<isPalindrome(num) << endl;
 
+	// 寻找有序矩阵中的指定元素 O(n^2)
+	cout<<endl;
+	cout<<"寻找有序矩阵中的指定元素:"<< endl;
+	int n7[3][4] = {1,3,5,7,10,11,17,20,25,30,34,60};
+	///给vector赋二维数组
+	vector<vector<int>> number7(3,vector<int>(4)) ;  
+	for(int i = 0; i < 3; ++i)
+	{
+		for(int j = 0; j < 4; ++j)
+		{
+			number7[i][j]=n7[i][j];
+		}
+	}
+	num = 9;
+	cout<< boolalpha << searchMatrix(number7,num) << endl;	
+
+	// 寻找有序数组中指定元素的位置
+	int n8[] = {1,3,5,6};
+	num = 1;
+	cout<<endl;
+	cout<<"寻找有序数组中指定元素"<<num<<"的位置："<< endl;
+	cout<<searchInsert(n8, 4, num)<<endl;	
+
 	// n阶乘
 	num = 5;
 	cout<<endl;
@@ -616,6 +693,8 @@ int main( )
 	cout<<"第"<<num<<"个斐波那契数是："<< endl;
 	result = Fibonacci(num);
 	cout<< result << endl;
+
+	
 
 	system("pause");
 	return 0;
