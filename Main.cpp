@@ -211,10 +211,9 @@ int main()
 	vector<int> numbers9(n9, n9+5);
 	cout<<"最高价差可以达到："<< DP->maxProfit(numbers9)<<endl;
 
-
-	system("pause");
-	return 0;
-
+	cout << endl;
+	int m10 = 4, n10 = 3;
+	cout << m10<<"*"<<n10<<"矩阵的最短路径:" << DP->uniquePaths(m10,n10) << endl;
 
 
 	system("pause");

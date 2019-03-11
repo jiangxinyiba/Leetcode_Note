@@ -14,5 +14,6 @@ public:
 
 public:
 	int	maxProfit(vector<int> &prices);
+	int	uniquePaths(int	m, int	n);
 
 };
